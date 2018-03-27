@@ -12,6 +12,7 @@ type Block struct {
 	Data          []byte //区块存储的实际有效信息，也就是交易
 	PrevBlockHash []byte //前一个块的哈希，即父哈希
 	Hash          []byte //当前块的哈希
+	nonce         int
 }
 
 func (b *Block) SetHash() {
@@ -25,7 +26,11 @@ func (b *Block) SetHash() {
 
 //创建新区块
 func NewBlock(data string, PrevBlockHash []byte) *Block {
-	block := &Block{time.Now().Unix(), []byte(data), PrevBlockHash, []byte{}}
-	block.SetHash()
+	block := &Block{time.Now().Unix(), []byte(data), PrevBlockHash, []byte{}, 0}
+	//block.SetHash()
+	pow := NewProofOfWork(block)
+	nonce, hash := pow.run()
+	block.Hash = hash
+	block.nonce = nonce
 	return block
 }
