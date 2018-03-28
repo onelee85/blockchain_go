@@ -74,7 +74,7 @@ func (pow *ProofOfWork) run() (int, []byte) {
 		hasInt.SetBytes(hash[:])       //将哈希转换成一个大整数
 		//将这个大整数与目标进行比较 hasInt比target小
 		if hasInt.Cmp(pow.target) == -1 {
-			fmt.Printf("\r%x", hash)
+			fmt.Printf("Hash: %x\n", hash)
 			break
 		} else {
 			nonce++
@@ -88,7 +88,7 @@ func (pow *ProofOfWork) run() (int, []byte) {
 //对工作量证明进行验证
 func (pow *ProofOfWork) Validate() bool {
 	var hasInt big.Int
-	data := pow.prepareData(pow.block.nonce)
+	data := pow.prepareData(pow.block.Nonce)
 	hash := sha256.Sum256(data)
 	hasInt.SetBytes(hash[:])
 	vaild := hasInt.Cmp(pow.target) == -1
