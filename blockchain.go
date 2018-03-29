@@ -29,6 +29,7 @@ type BlockchainIterator struct {
 	db          *bolt.DB
 }
 
+//挖矿
 func (bc *Blockchain) MineBlock(transactions []*Transaction) {
 	var lastHash []byte
 
@@ -90,7 +91,7 @@ func NewBlockchain(address string) *Blockchain {
 
 		if b == nil { //如果没有区块链
 			fmt.Println("No existing blockchain found. Creating a new one...")
-			
+
 			cbtx := NewCoinbaseTX(address, genesisCoinbaseData)
 			//创建创世块
 			genesis := NewGenesisBlock(cbtx)

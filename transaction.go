@@ -14,6 +14,7 @@ import (
 const subsidy = 10
 
 // Transaction represents a Bitcoin transaction
+//每笔交易都必须至少有一个输入和输出。输入引用前一个事务的输出
 type Transaction struct {
 	ID   []byte
 	Vin  []TXInput  //多笔交易输入
@@ -40,6 +41,7 @@ func NewCoinbaseTX(to, data string) *Transaction {
 	}
 
 	txin := TXInput{[]byte{}, -1, data}
+	//subsidy是奖励的金额
 	txout := TXOutput{subsidy, to}
 	tx := Transaction{nil, []TXInput{txin}, []TXOutput{txout}}
 	tx.SetID()
@@ -47,7 +49,7 @@ func NewCoinbaseTX(to, data string) *Transaction {
 	return &tx
 }
 
-// SetID sets ID of a transaction
+// 交易ID hash
 func (tx *Transaction) SetID() {
 	var encoded bytes.Buffer
 	var hash [32]byte
